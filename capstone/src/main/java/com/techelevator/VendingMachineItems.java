@@ -3,11 +3,15 @@ package com.techelevator;
 
 
 public class VendingMachineItems {
+
+    //Instance Variables
     private String slotLocation;
-private String itemName;
-private double itemPrice;
-private String itemType;
-private int itemStock;
+    private String itemName;
+    private double itemPrice;
+    private String itemType;
+    private int itemStock;
+
+    //Constructors
 
     public VendingMachineItems() {
     }
@@ -20,6 +24,35 @@ private int itemStock;
         this.itemStock = 5;
     }
 
+    //Methods
+    @Override
+    public String toString() {
+        return "VendingMachineItems{" +
+                "slotLocation='" + slotLocation + '\'' +
+                ", itemName='" + itemName + '\'' +
+                ", itemPrice=" + itemPrice +
+                '}';
+    }
+
+    public String dispenseMessage() {
+        String result = "";
+
+        String itemType = getItemType();
+        switch(itemType){
+            case "Chip": result = "Crunch Crunch, Yum!";
+            case "Candy": result = "Munch Munch, Yum!";
+            case "Drink": result = "Glug Glug, Yum!";
+            case "Gum": result = "Chew Chew, Yum!";
+        }
+
+        return result;
+
+    }
+
+
+
+
+    //Getters and Setters
     public String getSlotLocation() {
         return slotLocation;
     }
@@ -60,12 +93,5 @@ private int itemStock;
         this.itemStock = itemStock;
     }
 
-    @Override
-    public String toString() {
-        return "VendingMachineItems{" +
-                "slotLocation='" + slotLocation + '\'' +
-                ", itemName='" + itemName + '\'' +
-                ", itemPrice=" + itemPrice +
-                '}';
-    }
+
 }

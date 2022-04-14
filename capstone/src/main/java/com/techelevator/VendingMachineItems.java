@@ -1,13 +1,14 @@
 package com.techelevator;
 
 
+import java.math.BigDecimal;
 
 public class VendingMachineItems {
 
     //Instance Variables
     private String slotLocation;
     private String itemName;
-    private double itemPrice;
+    BigDecimal itemPrice = new BigDecimal("0.0");
     private String itemType;
     private int itemStock;
 
@@ -16,7 +17,7 @@ public class VendingMachineItems {
     public VendingMachineItems() {
     }
 
-    public VendingMachineItems(String slotLocation, String itemName, double itemPrice, String itemType) {
+    public VendingMachineItems(String slotLocation, String itemName, BigDecimal itemPrice, String itemType) {
         this.slotLocation = slotLocation;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
@@ -69,11 +70,11 @@ public class VendingMachineItems {
         this.itemName = itemName;
     }
 
-    public double getItemPrice() {
+    public BigDecimal getItemPrice() {
         return itemPrice;
     }
 
-    public void setItemPrice(double itemPrice) {
+    public void setItemPrice(BigDecimal itemPrice) {
         this.itemPrice = itemPrice;
     }
 

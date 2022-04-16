@@ -1,6 +1,7 @@
 package com.techelevator;
 
 import com.techelevator.view.Menu;
+import com.techelevator.view.ProductOutOfStockException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,9 +33,14 @@ public class VendingMachineCLI {
    // Variable to handle the current date and time.
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a");
 
+	private static final String VENDING_MACHINE_CSV = "capstone/vendingmachine.csv";
+
 
 
 	private Menu menu;
+
+	public VendingMachineCLI() {
+	}
 
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
@@ -61,7 +67,12 @@ public class VendingMachineCLI {
 
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
               // calling a method to purchase the items
-				runPurchaseMenu(menu, vendingmachineitems);
+				try {
+					runPurchaseMenu( menu, vendingmachineitems );
+				}catch(Exception e){
+					e.getMessage();
+					e.printStackTrace();
+				}
 
 			} else if (choice.equals( MAIN_MENU_OPTION_EXIT ))
 				// exit the main menu
@@ -70,16 +81,17 @@ public class VendingMachineCLI {
 	}
 
 	// Converting the csv file to a list of items by reading the csv and adding the items to list
-	public static List<VendingMachineItems> getVendingMachineItems(){
+	public  List<VendingMachineItems> getVendingMachineItems(){
 
         List<VendingMachineItems> itemsList = new ArrayList<VendingMachineItems>();
 
-		String currentDir = System.getProperty( "user.dir" );
+		//String currentDir = System.getProperty( "user.dir" );
+	//	System.out.println("current dir " + currentDir);
 
-		String path = "\\capstone\\vendingmachine.csv";
-		String filePath = currentDir + path;
+	//	String path = "\\capstone\\vendingmachine.csv";
+	//	String filePath = currentDir + path;
 
-		File fileName = new File( filePath );
+		File fileName = new File( VENDING_MACHINE_CSV );
 
 		try(Scanner sc = new Scanner( fileName )){
 			while(sc.hasNextLine()) {
@@ -92,15 +104,15 @@ public class VendingMachineCLI {
 
 		}
 		catch(FileNotFoundException e){
-			e.getMessage();
-			System.out.println(" In display items methods" + e.getMessage());
+			e.printStackTrace();
+
 		}
 		return itemsList ;
 
 	}
 
 	// To print the list of items from the list
-	public static void printVendingMachineItems(List<VendingMachineItems> vendingMachineItems){
+	public void printVendingMachineItems(List<VendingMachineItems> vendingMachineItems){
 		System.out.println("-----------------------------------------------------------------");
 		System.out.printf(  "%5s %15s %15s %15s\n","Slot","Item","Price","Qty Remaning" );
 		System.out.println("--------------------------------------------------------------------");
@@ -114,7 +126,7 @@ public class VendingMachineCLI {
 	}
 
 	// The purchase option further open a submenu to choose from
-	public static void runPurchaseMenu(Menu menu, List<VendingMachineItems> vendingMachineItemsList){
+	public  void runPurchaseMenu(Menu menu, List<VendingMachineItems> vendingMachineItemsList) throws ProductOutOfStockException {
 		int userSelection = -1; //added
 
 		Timestamp timestamp = new Timestamp( System.currentTimeMillis() );
@@ -199,7 +211,7 @@ public class VendingMachineCLI {
 								}
 
 							}else{
-								System.out.println("Product is out of stock");
+								throw new ProductOutOfStockException("Product is out of stock");
 							}
 						}
 
@@ -210,11 +222,6 @@ public class VendingMachineCLI {
 				}else{
 					System.out.println("Please enter money first");
 				}
-
-
-
-
-
 			} else if (ch.equals( "Finish Transaction" )){
 				userSelection = 3;
 

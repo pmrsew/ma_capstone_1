@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 
+// This file creates a log file in the current project to log every transaction happening when the vending machine project is run
 public class GenerateLog {
     public static void log(String message) {
         // To get the path of current working directory

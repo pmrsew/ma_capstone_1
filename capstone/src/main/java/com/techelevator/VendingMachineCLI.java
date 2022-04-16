@@ -12,19 +12,24 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Scanner;
-/*
-I worked on the priting of the items..formatting and all
-then created the Generate log class and all the code related to logging to the log file, creating date fields.
-I was still working on log file..step 8:....I need to run and check if its working fine
-after step 8..I planned to move to step 9, then unit testing and exception handling..
 
+/*
+To do -
+1. Every method must have a unit test case
+2. can create user exception to prints the msgs or raise exceptions instead of saying Invalid bill or Insufficent money or Please enter
+money
+3. handle number format exceptions possible
+4. validation if any
+5. 
  */
 public class VendingMachineCLI {
 
+	// Variable declarations
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE ,MAIN_MENU_OPTION_EXIT};
+   // Variable to handle the current date and time.
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a");
 
 
@@ -35,6 +40,7 @@ public class VendingMachineCLI {
 		this.menu = menu;
 	}
 
+	// Run method mainly focuses on the menu options , based on the input guide the program further.
 	public void run() {
 
 		List<VendingMachineItems> vendingmachineitems = new ArrayList<VendingMachineItems>();
@@ -43,61 +49,27 @@ public class VendingMachineCLI {
 
 
 		while (true) {
+			// Giving the choice of Main menu
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
-
+			// To log the timestamp to log file.
 			GenerateLog.log( ">"+sdf.format( timestamp ) );
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
-				// display vending machine items
-
-//				System.out.println(" Slot Location " + " Item " + " Price " );
-//				for(VendingMachineItems items : vendingmachineitems ){
-//					System.out.println(items.getSlotLocation() + "  " + items.getItemName() + " " + items.getItemPrice());
-//				}
+				// calling a method to display vending machine items
 				printVendingMachineItems( vendingmachineitems );
 
-
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				// do purchase
-//				String[] subMenuItems ={"Feed Money", "Select Product","Finish Transaction"};
-//
-//				String ch = (String) menu.getChoiceFromOptions(subMenuItems);
-//				double collectedMoney=0.0;
-//				if(ch.equals( "Feed Money" )){
-//					System.out.println("feed money");
-//					Scanner input = new Scanner( System.in );
-//					String dollorInput;
-//					String c = "n";
-//					do{
-//						System.out.println("Enter the money($1,$2,$5,$10) :");
-//						dollorInput= input.nextLine();
-//
-//
-//						if(dollorInput.equals("1") || dollorInput.equals("2") || dollorInput.equals("5")||dollorInput.equals("10")) {
-//							int money = Integer.parseInt( dollorInput);
-//							collectedMoney += money;
-//						}else
-//							System.out.println("Please enter $1,$2,$5,$10");
-//
-//						System.out.println("Do you want to enter more money(y/n)");
-//						c = input.nextLine().toLowerCase(  );
-//
-//					}while(c.equals( "y" ));
-//					System.out.println("Collected Money :" + collectedMoney);
-//
-//				} else if(ch.equals( "Select Product" )){
-//					System.out.println("select product");
-//				} else if (ch.equals( "Finish Transaction" )){
-//					System.out.println("finish transtion");
-//				}
+              // calling a method to purchase the items
 				runPurchaseMenu(menu, vendingmachineitems);
 
 			} else if (choice.equals( MAIN_MENU_OPTION_EXIT ))
+				// exit the main menu
 				System.exit( 0 );
 		}
 	}
 
+	// Converting the csv file to a list of items by reading the csv and adding the items to list
 	public static List<VendingMachineItems> getVendingMachineItems(){
 
         List<VendingMachineItems> itemsList = new ArrayList<VendingMachineItems>();
@@ -127,6 +99,7 @@ public class VendingMachineCLI {
 
 	}
 
+	// To print the list of items from the list
 	public static void printVendingMachineItems(List<VendingMachineItems> vendingMachineItems){
 		System.out.println("-----------------------------------------------------------------");
 		System.out.printf(  "%5s %15s %15s %15s\n","Slot","Item","Price","Qty Remaning" );
@@ -140,10 +113,12 @@ public class VendingMachineCLI {
 		}
 	}
 
+	// The purchase option further open a submenu to choose from
 	public static void runPurchaseMenu(Menu menu, List<VendingMachineItems> vendingMachineItemsList){
 		int userSelection = -1; //added
-		//double collectedMoney = 0.00; //added
+
 		Timestamp timestamp = new Timestamp( System.currentTimeMillis() );
+
 		BigDecimal collectedMoney = new BigDecimal( 0.0 );
 
 		do {
@@ -154,19 +129,13 @@ public class VendingMachineCLI {
 			String ch = (String) menu.getChoiceFromOptions(subMenuItems);
 
 
-			//double collectedMoney=0.0;
 			if(ch.equals( "Feed Money" )){
 				userSelection = 1;
-				//System.out.println("feed money");
 				Scanner input = new Scanner( System.in );
 				String dollorInput;
-				//String c = "n";
-				//do{
+
 					System.out.println(System.lineSeparator() + "Enter the money($1,$2,$5,$10) :");
 					dollorInput= input.nextLine();
-
-
-
 
 					if(dollorInput.equals("1") || dollorInput.equals("2") || dollorInput.equals("5")||dollorInput.equals("10")) {
 						BigDecimal money = new BigDecimal( dollorInput);

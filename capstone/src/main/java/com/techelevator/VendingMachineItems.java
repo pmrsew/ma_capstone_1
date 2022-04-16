@@ -17,6 +17,7 @@ public class VendingMachineItems {
     public VendingMachineItems() {
     }
 
+    // Parameterized constructor with base stock set to 5
     public VendingMachineItems(String slotLocation, String itemName, BigDecimal itemPrice, String itemType) {
         this.slotLocation = slotLocation;
         this.itemName = itemName;
@@ -25,7 +26,7 @@ public class VendingMachineItems {
         this.itemStock = 5;
     }
 
-    //Methods
+    //Methods to handle printing the user required responses.
     @Override
     public String toString() {
         return "VendingMachineItems{" +

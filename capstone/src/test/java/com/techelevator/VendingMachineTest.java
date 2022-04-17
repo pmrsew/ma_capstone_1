@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class VendingMachineCLITest  {
+public class VendingMachineTest {
 
     @Test
     public void to_check_the_total_records_printed_equals_actual_file() throws FileNotFoundException {
 
-        VendingMachineCLI vendingMachineCLI = new VendingMachineCLI();
+        VendingMachineApplication vendingMachine = new VendingMachineApplication();
         List<VendingMachineItems> list = new ArrayList<>();
         int count=0;
 
-        File srcFile = new File( "C:\\Users\\gjyot\\OneDrive\\Desktop\\meritamerica\\pair-programming\\module-1-capstone\\capstone\\vendingmachine.csv" );
+        File srcFile = new File( "vendingmachine.csv" );
 
             Scanner sc = new Scanner(srcFile);
 
@@ -29,9 +29,11 @@ public class VendingMachineCLITest  {
             }
             sc.close();
 
-
-        Assert.assertEquals( count, vendingMachineCLI.getVendingMachineItems().size() );
+        Assert.assertEquals( count, vendingMachine.getVendingMachineItems(srcFile).size() );
     }
 
+    @Test
+    public void to_check_valid_feed_money() {
 
+    }
 }

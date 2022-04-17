@@ -8,7 +8,7 @@ public class VendingMachineItems {
     //Instance Variables
     private String slotLocation;
     private String itemName;
-    BigDecimal itemPrice = new BigDecimal("0.0");
+    BigDecimal itemPrice = new BigDecimal( "0.0" );
     private String itemType;
     private int itemStock;
 
@@ -37,26 +37,27 @@ public class VendingMachineItems {
     }
 
     public String dispenseMessage() {
-        String result = "";
+        String result = null;
 
         String itemType = getItemType();
-        switch(itemType){
-            case "Chip": result = "Crunch Crunch, Yum!";
-                        break;
-            case "Candy": result = "Munch Munch, Yum!";
-                         break;
-            case "Drink": result = "Glug Glug, Yum!";
-                         break;
-            case "Gum": result = "Chew Chew, Yum!";
-                        break;
-            default: break;
+        switch (itemType) {
+            case "Chip":
+                result = "Crunch Crunch, Yum!";
+                break;
+            case "Candy":
+                result = "Munch Munch, Yum!";
+                break;
+            case "Drink":
+                result = "Glug Glug, Yum!";
+                break;
+            case "Gum":
+                result = "Chew Chew, Yum!";
+                break;
+            default:
+                break;
         }
-
         return result;
-
     }
-
-
 
 
     //Getters and Setters

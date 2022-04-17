@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class VendingMachineItemsTest {
 
     @Test
-    public void to_check_if_dispenseMessage_diplayes_the_chip_output() {
+    public void to_check_if_dispenseMessage_diplays_the_chip_output() {
         VendingMachineItems vendingMachineItems = new VendingMachineItems(
                 "A1"
                 , "Potato Crisps"
@@ -18,7 +18,7 @@ public class VendingMachineItemsTest {
     }
 
     @Test
-    public void to_check_if_dispenseMessage_diplayes_the_candy_output() {
+    public void to_check_if_dispenseMessage_diplays_the_candy_output() {
         VendingMachineItems vendingMachineItems = new VendingMachineItems(
                 "B1"
                 , "Moonpie"
@@ -28,7 +28,7 @@ public class VendingMachineItemsTest {
     }
 
     @Test
-    public void to_check_if_dispenseMessage_diplayes_the_drink_output() {
+    public void to_check_if_dispenseMessage_diplays_the_drink_output() {
         VendingMachineItems vendingMachineItems = new VendingMachineItems(
                 "C3"
                 , "Mountain Melter"
@@ -38,7 +38,7 @@ public class VendingMachineItemsTest {
     }
 
     @Test
-    public void to_check_if_dispenseMessage_diplayes_the_gum_output() {
+    public void to_check_if_dispenseMessage_diplays_the_gum_output() {
         VendingMachineItems vendingMachineItems = new VendingMachineItems(
                 "D3"
                 , "Chiclets"

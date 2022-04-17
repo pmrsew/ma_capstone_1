@@ -1,17 +1,16 @@
-package com.techelevator;
+package com.techelevator.exceptions;
 
-public class ProductOutOfStockException extends Exception {
+public class InvalidBillException extends Exception {
     private String exception;
 
-    public ProductOutOfStockException(String exception) {
+    public InvalidBillException(String exception) {
         this.exception = exception;
     }
 
     @Override
     public String toString() {
-        return "\nProductOutOfStockException{" +
+        return "\nInvalidBillException{" +
                 "exception='" + exception + '\'' +
                 '}';
     }
 }
-

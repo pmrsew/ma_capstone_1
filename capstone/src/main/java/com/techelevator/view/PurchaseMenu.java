@@ -1,6 +1,10 @@
-package com.techelevator;
+package com.techelevator.view;
 
-import com.techelevator.view.Menu;
+import com.techelevator.*;
+import com.techelevator.exceptions.InsufficientFundsException;
+import com.techelevator.exceptions.InvalidBillException;
+import com.techelevator.exceptions.ProductNotFoundException;
+import com.techelevator.exceptions.ProductOutOfStockException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,13 +15,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PurchaseMenu {
-    private Menu menu;
 
-    List<VendingMachineItems> vendingMachineItemsList = new ArrayList<VendingMachineItems>();
-    Timestamp timestamp = new Timestamp( System.currentTimeMillis() );
+    //Instance Variables
+    private Menu menu;
+    private List<VendingMachineItems> vendingMachineItemsList = new ArrayList<VendingMachineItems>();
 
     // Date variable to log the data to log file
     private static final SimpleDateFormat sdf = new SimpleDateFormat( "MM/dd/yyyy HH:mm:ss a" );
+    private Timestamp timestamp = new Timestamp( System.currentTimeMillis() );
 
     public PurchaseMenu(Menu menu, List<VendingMachineItems> vendingMachineItemsList) {
         this.menu = menu;
@@ -48,7 +53,7 @@ public class PurchaseMenu {
 
     // This method performs actions required for Select Product Menu option i.e
     // allowing user to select a slot items and display msgs accordingly
-    public BigDecimal purchaseItems(String selectedProduct, BigDecimal collectedMoney) {
+    public BigDecimal purchaseItem(String selectedProduct, BigDecimal collectedMoney) {
         int result; // to store the Big decimal comparision value
 
         for (VendingMachineItems currentItem : vendingMachineItemsList) {
@@ -102,6 +107,7 @@ public class PurchaseMenu {
 
         GenerateLog.log( ">" + sdf.format( timestamp )
                 + " GIVE CHANGE: $" + collectedMoney.setScale( 2, RoundingMode.UP ) );
+
         //Turn collected money balance into cents
         collectedMoney = collectedMoney.multiply( new BigDecimal( 100 ) );
 
@@ -116,7 +122,7 @@ public class PurchaseMenu {
             }
         }
 
-        System.out.println( "Transaction completed. Change returned:"
+        System.out.println( System.lineSeparator() + "Transaction completed. Change returned:"
                               + quarterCount + " Quarters, "
                                + dimeCount + " Dimes, "
                                + nickleCount + " Nickles.");
@@ -131,8 +137,6 @@ public class PurchaseMenu {
         BigDecimal collectedMoney = new BigDecimal( 0.0 );
         do {
 
-            System.out.println( "*********************" );//added
-            // System.out.println("Current Money Provided: " + collectedMoney);//added
             String[] subMenuItems = {"Feed Money", "Select Product", "Finish Transaction"};
             String ch = (String) menu.getChoiceFromOptions( subMenuItems );
 
@@ -142,28 +146,29 @@ public class PurchaseMenu {
                 Scanner input = new Scanner( System.in );
                 String dollorInput;
 
-                System.out.println( System.lineSeparator() + "Enter the money($1,$2,$5,$10) :" );
+                System.out.println( System.lineSeparator() + "Enter money ($1,$2,$5,$10): " );
                 dollorInput = input.nextLine();
 
                 collectedMoney = feedMoney( dollorInput, collectedMoney );
-                System.out.println( "Total Money Provided: " + collectedMoney );
+                System.out.println( System.lineSeparator() + "Total Money Provided: $" + collectedMoney);
 
 
             } else if (ch.equals( "Select Product" )) {
-                //all below is added
                 userSelection = 2;
+
+                //variable is used to keep track if the slot entered exists
                 boolean isFound = false;
+
                 try {
                     // if the money > 0 proceed further else let user know to enter the money
                     if (collectedMoney.compareTo( BigDecimal.ZERO ) > 0) {
 
-                        Scanner sc = new Scanner( System.in );
-               // Printing the items for user to select
+                        // Printing the items for user to select
                         VendingMachineApplication.printVendingMachineItems( vendingMachineItemsList );
 
-                        System.out.println( "Enter Slot of Product Wanted: " );
+                        Scanner sc = new Scanner( System.in );
+                        System.out.println( System.lineSeparator() + "Enter Slot of Product Wanted: " );
                         String selectedProduct = sc.nextLine();
-
 
                         for (VendingMachineItems currentItem : vendingMachineItemsList) {
                             if (currentItem.getSlotLocation().equalsIgnoreCase( selectedProduct )) {
@@ -173,7 +178,7 @@ public class PurchaseMenu {
                         // if user enters an invalid slot number throw an exception
                         try {
                             if (isFound) {
-                                collectedMoney = purchaseItems( selectedProduct, collectedMoney );
+                                collectedMoney = purchaseItem( selectedProduct, collectedMoney );
                             }
                             else
                                 throw new ProductNotFoundException( "Invalid Slot Selected" );
@@ -182,13 +187,15 @@ public class PurchaseMenu {
                         }
 
                     } else {
-                        System.out.println( "Please enter money first" );
                         throw new InsufficientFundsException( "Please enter money first" );
                     }
                 } catch (InsufficientFundsException e) {
                     System.err.println( e.toString() );
-
+                    System.err.println(System.lineSeparator());
+                    System.err.flush();
                 }
+
+
             } else if (ch.equals( "Finish Transaction" )) {
                 userSelection = 3;
 

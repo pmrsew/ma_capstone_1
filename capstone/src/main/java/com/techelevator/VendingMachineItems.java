@@ -8,14 +8,13 @@ public class VendingMachineItems {
     //Instance Variables
     private String slotLocation;
     private String itemName;
-    BigDecimal itemPrice = new BigDecimal( "0.0" );
+    private BigDecimal itemPrice = new BigDecimal( "0.0" );
     private String itemType;
     private int itemStock;
 
     //Constructors
 
-    public VendingMachineItems() {
-    }
+    public VendingMachineItems() {}
 
     // Parameterized constructor with base stock set to 5
     public VendingMachineItems(String slotLocation, String itemName, BigDecimal itemPrice, String itemType) {
@@ -64,7 +63,6 @@ public class VendingMachineItems {
     public String getSlotLocation() {
         return slotLocation;
     }
-
     public void setSlotLocation(String slotLocation) {
         this.slotLocation = slotLocation;
     }
@@ -72,7 +70,6 @@ public class VendingMachineItems {
     public String getItemName() {
         return itemName;
     }
-
     public void setItemName(String itemName) {
         this.itemName = itemName;
     }
@@ -80,7 +77,6 @@ public class VendingMachineItems {
     public BigDecimal getItemPrice() {
         return itemPrice;
     }
-
     public void setItemPrice(BigDecimal itemPrice) {
         this.itemPrice = itemPrice;
     }
@@ -88,7 +84,6 @@ public class VendingMachineItems {
     public String getItemType() {
         return itemType;
     }
-
     public void setItemType(String itemType) {
         this.itemType = itemType;
     }
@@ -96,7 +91,6 @@ public class VendingMachineItems {
     public int getItemStock() {
         return itemStock;
     }
-
     public void setItemStock(int itemStock) {
         this.itemStock = itemStock;
     }

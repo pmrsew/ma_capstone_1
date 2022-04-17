@@ -1,4 +1,4 @@
-package com.techelevator;
+package com.techelevator.exceptions;
 
 public class InsufficientFundsException extends Exception {
     private String exception;

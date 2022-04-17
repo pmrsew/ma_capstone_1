@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class VendingMachineTest {
 
     @Test
-    public void to_check_the_total_records_printed_equals_actual_file() throws FileNotFoundException {
+    public void to_check_the_total_records_generated_equals_actual_file() throws FileNotFoundException {
 
         VendingMachineApplication vendingMachine = new VendingMachineApplication();
         List<VendingMachineItems> list = new ArrayList<>();

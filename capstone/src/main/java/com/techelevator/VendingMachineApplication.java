@@ -1,6 +1,7 @@
 package com.techelevator;
 
 import com.techelevator.view.Menu;
+import com.techelevator.view.PurchaseMenu;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,14 +27,13 @@ public class VendingMachineApplication {
     private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
     private static final String MAIN_MENU_OPTION_EXIT = "Exit";
     private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT};
+    private Menu menu;
+
     // Variable to handle the current date and time.
     private static final SimpleDateFormat sdf = new SimpleDateFormat( "MM/dd/yyyy HH:mm:ss a" );
 
     private static final String VENDING_MACHINE_CSV = "capstone/vendingmachine.csv";
-
-    File fileName = new File( VENDING_MACHINE_CSV );
-
-    private Menu menu;
+    private File fileName = new File( VENDING_MACHINE_CSV );
 
     public VendingMachineApplication() {
     }
@@ -45,29 +45,31 @@ public class VendingMachineApplication {
     // Run method mainly focuses on the menu options , based on the input we guide the program further.
     public void run() {
 
-        List<VendingMachineItems> vendingmachineitems = new ArrayList<VendingMachineItems>();
-        vendingmachineitems = getVendingMachineItems( fileName );
+        List<VendingMachineItems> vendingMachineItems = new ArrayList<VendingMachineItems>();
+        vendingMachineItems = getVendingMachineItems( fileName );
         Timestamp timestamp = new Timestamp( System.currentTimeMillis() );
+
+        // To log the timestamp to log file.
+        GenerateLog.log( ">" + sdf.format( timestamp ) + " Program Begins..." );
+
 
         while (true) {
             // Giving the choice of Main menu
             String choice = (String) menu.getChoiceFromOptions( MAIN_MENU_OPTIONS );
 
-            // To log the timestamp to log file.
-            GenerateLog.log( ">" + sdf.format( timestamp ) + " Program Begins..." );
+
 
             if (choice.equals( MAIN_MENU_OPTION_DISPLAY_ITEMS )) {
                 // calling a method to display vending machine items
-                printVendingMachineItems( vendingmachineitems );
+                printVendingMachineItems( vendingMachineItems );
 
             } else if (choice.equals( MAIN_MENU_OPTION_PURCHASE )) {
                 // calling a method to purchase the items
-
-                PurchaseMenu purchaseMenu = new PurchaseMenu( menu, vendingmachineitems );
+                PurchaseMenu purchaseMenu = new PurchaseMenu( menu, vendingMachineItems );
                 purchaseMenu.runPurchaseMenu();
 
             } else if (choice.equals( MAIN_MENU_OPTION_EXIT ))
-                // exit the main menu
+                // exit the main menu and application
                 System.exit( 0 );
         }
     }
@@ -94,7 +96,7 @@ public class VendingMachineApplication {
     public static void printVendingMachineItems(List<VendingMachineItems> vendingMachineItems) {
         System.out.println( "-----------------------------------------------------------------" );
         System.out.printf( "%5s %15s %15s %15s\n", "Slot", "Item", "Price", "Qty Remaning" );
-        System.out.println( "--------------------------------------------------------------------" );
+        System.out.println( "-----------------------------------------------------------------" );
         for (VendingMachineItems items : vendingMachineItems) {
             System.out.printf( "%5s %20s %10s %10s",
                     items.getSlotLocation()

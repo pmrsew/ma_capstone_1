@@ -13,7 +13,8 @@ public class VendingMachineItemsTest {
                 "A1"
                 , "Potato Crisps"
                 , new BigDecimal( "3.05" )
-                , "Chip" );
+                , "Chip",
+                5 );
         Assert.assertEquals( "Crunch Crunch, Yum!", vendingMachineItems.dispenseMessage() );
     }
 
@@ -23,7 +24,8 @@ public class VendingMachineItemsTest {
                 "B1"
                 , "Moonpie"
                 , new BigDecimal( "1.80" )
-                , "Candy" );
+                , "Candy"
+                , 5 );
         Assert.assertEquals( "Munch Munch, Yum!", vendingMachineItems.dispenseMessage() );
     }
 
@@ -33,7 +35,8 @@ public class VendingMachineItemsTest {
                 "C3"
                 , "Mountain Melter"
                 , new BigDecimal( "1.50" )
-                , "Drink" );
+                , "Drink"
+                , 5 );
         Assert.assertEquals( "Glug Glug, Yum!", vendingMachineItems.dispenseMessage() );
     }
 
@@ -43,7 +46,8 @@ public class VendingMachineItemsTest {
                 "D3"
                 , "Chiclets"
                 , new BigDecimal( "0.75" )
-                , "Gum" );
+                , "Gum"
+                , 5 );
         Assert.assertEquals( "Chew Chew, Yum!", vendingMachineItems.dispenseMessage() );
     }
 }

@@ -1,10 +1,11 @@
-package com.techelevator.view;
+package com.techelevator;
 
 import com.techelevator.*;
 import com.techelevator.exceptions.InsufficientFundsException;
 import com.techelevator.exceptions.InvalidBillException;
 import com.techelevator.exceptions.ProductNotFoundException;
 import com.techelevator.exceptions.ProductOutOfStockException;
+import com.techelevator.view.Menu;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,6 +25,9 @@ public class PurchaseMenu {
     private static final SimpleDateFormat sdf = new SimpleDateFormat( "MM/dd/yyyy HH:mm:ss a" );
     private Timestamp timestamp = new Timestamp( System.currentTimeMillis() );
 
+    public PurchaseMenu() {
+    }
+
     public PurchaseMenu(Menu menu, List<VendingMachineItems> vendingMachineItemsList) {
         this.menu = menu;
         this.vendingMachineItemsList = vendingMachineItemsList;
@@ -37,7 +41,7 @@ public class PurchaseMenu {
             if (userInput.equals( "1" ) || userInput.equals( "2" ) || userInput.equals( "5" ) || userInput.equals( "10" )) {
                 BigDecimal money = new BigDecimal( userInput );
                 collectedMoney = collectedMoney.add( money );
-                GenerateLog.log( ">" + sdf.format( timestamp )
+                LogWriter.log( ">" + sdf.format( timestamp )
                         + " FEED MONEY: "
                         + "$" + money.setScale( 2, RoundingMode.UP )
                         + " $" + collectedMoney.setScale( 2, RoundingMode.UP ) );
@@ -61,12 +65,11 @@ public class PurchaseMenu {
             if (currentItem.getSlotLocation().equalsIgnoreCase( selectedProduct )) {
                 try {
                     if (currentItem.getItemStock() > 0) {
-
                         result = collectedMoney.compareTo( currentItem.getItemPrice() );
-                        try{
-                            if (result ==1) { // if collected money  >= currentItem.getItemprice
+                        try {
+                            if (result == 1) { // if collected money  >= currentItem.getItemprice
                                 currentItem.setItemStock( currentItem.getItemStock() - 1 );
-                                GenerateLog.log( ">" + sdf.format( timestamp )
+                                LogWriter.log( ">" + sdf.format( timestamp )
                                         + " " + currentItem.getItemName()
                                         + "  " + currentItem.getSlotLocation()
                                         + " $" + collectedMoney.setScale( 2, RoundingMode.UP )
@@ -76,16 +79,14 @@ public class PurchaseMenu {
                                 System.out.println( "Item: " + currentItem.getItemName() + " Price: " + currentItem.getItemPrice() + " Remaining Balance: " + collectedMoney );
                                 System.out.println( currentItem.dispenseMessage() );
 
-                            } else if ( result == -1) {  // collected money < current Item price
-                                System.out.println( "Insufficient money provided. Can't purchase item." );
-                                throw new InsufficientFundsException("Insufficient money provided. Can't purchase item."  );
+                            } else if (result == -1) {  // collected money < current Item price
+                                throw new InsufficientFundsException( "You don't have enough balance to buy this product." );
                             }
-                        }
-                        catch(InsufficientFundsException e){
-                            System.err.println(e.toString());
+                        } catch (InsufficientFundsException e) {
+                            System.err.println( e.toString() );
                         }
                     } else {
-                        throw new ProductOutOfStockException( "Product is out of stock" );
+                        throw new ProductOutOfStockException( "Product is SOLD OUT (out of stock)" );
                     }
                 } catch (ProductOutOfStockException e) {
                     System.err.println( e.toString() );
@@ -105,7 +106,7 @@ public class PurchaseMenu {
 
         int remainder = 0;
 
-        GenerateLog.log( ">" + sdf.format( timestamp )
+        LogWriter.log( ">" + sdf.format( timestamp )
                 + " GIVE CHANGE: $" + collectedMoney.setScale( 2, RoundingMode.UP ) );
 
         //Turn collected money balance into cents
@@ -123,9 +124,9 @@ public class PurchaseMenu {
         }
 
         System.out.println( System.lineSeparator() + "Transaction completed. Change returned:"
-                              + quarterCount + " Quarters, "
-                               + dimeCount + " Dimes, "
-                               + nickleCount + " Nickles.");
+                + quarterCount + " Quarter(s), "
+                + dimeCount + " Dime(s), "
+                + nickleCount + " Nickle(s)." );
 
     }
 
@@ -146,11 +147,11 @@ public class PurchaseMenu {
                 Scanner input = new Scanner( System.in );
                 String dollorInput;
 
-                System.out.println( System.lineSeparator() + "Enter money ($1,$2,$5,$10): " );
+                System.out.println( System.lineSeparator() + "Enter Bill(s) ($1,$2,$5,$10): " );
                 dollorInput = input.nextLine();
 
                 collectedMoney = feedMoney( dollorInput, collectedMoney );
-                System.out.println( System.lineSeparator() + "Total Money Provided: $" + collectedMoney);
+                System.out.println( System.lineSeparator() + "Total Money Provided: $" + collectedMoney );
 
 
             } else if (ch.equals( "Select Product" )) {
@@ -167,31 +168,30 @@ public class PurchaseMenu {
                         VendingMachineApplication.printVendingMachineItems( vendingMachineItemsList );
 
                         Scanner sc = new Scanner( System.in );
-                        System.out.println( System.lineSeparator() + "Enter Slot of Product Wanted: " );
+                        System.out.println( System.lineSeparator() + "Enter Slot Number of the Product Willing to Purchase: " );
                         String selectedProduct = sc.nextLine();
 
                         for (VendingMachineItems currentItem : vendingMachineItemsList) {
                             if (currentItem.getSlotLocation().equalsIgnoreCase( selectedProduct )) {
                                 isFound = true;
-                           }
+                            }
                         }
                         // if user enters an invalid slot number throw an exception
                         try {
                             if (isFound) {
                                 collectedMoney = purchaseItem( selectedProduct, collectedMoney );
-                            }
-                            else
-                                throw new ProductNotFoundException( "Invalid Slot Selected" );
+                            } else
+                                throw new ProductNotFoundException( "Invalid Product Slot Selected" );
                         } catch (ProductNotFoundException e) {
                             System.err.println( e.toString() );
                         }
 
                     } else {
-                        throw new InsufficientFundsException( "Please enter money first" );
+                        throw new InsufficientFundsException( "Please Enter the Bill First to continue the transaction : " );
                     }
                 } catch (InsufficientFundsException e) {
                     System.err.println( e.toString() );
-                    System.err.println(System.lineSeparator());
+                    System.err.println( System.lineSeparator() );
                     System.err.flush();
                 }
 
